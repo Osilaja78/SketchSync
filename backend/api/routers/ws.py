@@ -1,40 +1,62 @@
-# backend/main.py
+# This module contains logic for websocket connection
+#  and creation of a new witeboard with unique id.
 
-from fastapi import APIRouter, WebSocket
-from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi import APIRouter, HTTPException, Depends
+from fastapi.responses import JSONResponse
+from fastapi.websockets import WebSocket, WebSocketDisconnect
+from typing import Dict, Set
+import json
+import uuid
 
-router = APIRouter(tags=["Websocket"])
+router = APIRouter(tags=['Websocket'])
 
-# Serve the frontend static files
-# app.mount("/", StaticFiles(directory="frontend", html=True), name="static")
+# In-memory storage for board IDs
+board_manager: Dict[str, Set[WebSocket]] = {}
 
-# WebSocket manager to keep track of connected clients
+
 class WebSocketManager:
     def __init__(self):
-        self.clients = set()
+        self.clients: Dict[str, Set[WebSocket]] = {}
 
-    async def connect(self, websocket: WebSocket):
+    async def connect(self, websocket: WebSocket, board_id: str):
         await websocket.accept()
-        self.clients.add(websocket)
+        if board_id not in self.clients:
+            self.clients[board_id] = set()
+        self.clients[board_id].add(websocket)
 
-    def disconnect(self, websocket: WebSocket):
-        self.clients.remove(websocket)
+    async def disconnect(self, board_id: str, websocket: WebSocket):
+        if board_id in self.clients:
+            self.clients[board_id].remove(websocket)
 
-    async def broadcast(self, data: dict):
-        for client in self.clients:
-            await client.send_json(data)
+    async def broadcast_canvas_update(self, board_id: str, image_url: str):
+        if board_id in self.clients:
+            for client in self.clients[board_id]:
+                await client.send_text(json.dumps({"type": "canvas_update", "imageURL": image_url}))
 
-manager = WebSocketManager()
 
-@router.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await manager.connect(websocket)
+websocket_manager = WebSocketManager()
+
+
+@router.post("/create_board")
+async def create_board():
+    new_board_id = str(uuid.uuid4())
+
+    # Store the new board ID in memory
+    board_manager[new_board_id] = set()
+
+    return JSONResponse(content={"board_id": new_board_id})
+
+
+@router.websocket("/ws/{board_id}")
+async def websocket_endpoint(websocket: WebSocket, board_id: str):
+    print("Inside websocket endpoint")
+    await websocket_manager.connect(websocket, board_id)
     try:
         while True:
-            data = await websocket.receive_json()
-            await manager.broadcast(data)
-    except Exception as e:
-        print(e)
-    finally:
-        manager.disconnect(websocket)
+            data = await websocket.receive_text()
+            data = json.loads(data)
+
+            if data["type"] == "canvas_update":
+                await websocket_manager.broadcast_canvas_update(board_id, data["imageURL"])
+    except WebSocketDisconnect:
+        await websocket_manager.disconnect(board_id, websocket)
