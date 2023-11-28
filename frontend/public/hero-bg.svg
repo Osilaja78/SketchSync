@@ -1,0 +1,86 @@
+<!-- <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="1440" height="560" preserveAspectRatio="none" viewBox="0 0 1440 560">
+    <g mask="url(&quot;#SvgjsMask1012&quot;)" fill="none">
+        <path d="M220.49 153.8 a171.77 171.77 0 1 0 343.54 0 a171.77 171.77 0 1 0 -343.54 0z" fill="rgba(142, 28, 28, 0.4)" class="triangle-float3"></path>
+        <path d="M1080.24 356.21 a155.27 155.27 0 1 0 310.54 0 a155.27 155.27 0 1 0 -310.54 0z" fill="rgba(142, 28, 28, 0.4)" class="triangle-float2"></path>
+        <path d="M439.59879561866194 413.28915959656536L421.544716368884 480.66790064061155 531.6398675598423 474.05964899325534z" fill="rgba(142, 28, 28, 0.4)" class="triangle-float3"></path>
+        <path d="M378.18 120 a93.66 93.66 0 1 0 187.32 0 a93.66 93.66 0 1 0 -187.32 0z" fill="rgba(142, 28, 28, 0.4)" class="triangle-float3"></path>
+        <path d="M581.63 156.56 a185.76 185.76 0 1 0 371.52 0 a185.76 185.76 0 1 0 -371.52 0z" fill="rgba(142, 28, 28, 0.4)" class="triangle-float2"></path>
+        <path d="M992.128,154.483C1014.957,153.327,1033.688,138.204,1044.875,118.271C1055.797,98.81,1058.369,75.34,1047.478,55.862C1036.337,35.936,1014.932,25.01,992.128,23.934C967.046,22.751,940.277,28.907,926.928,50.175C912.876,72.563,915.231,101.711,929.242,124.125C942.466,145.28,967.212,155.744,992.128,154.483" fill="rgba(142, 28, 28, 0.4)" class="triangle-float2"></path>
+        <path d="M996.2713740299457 4.252266542899424L858.6384330453834-27.52280158149783 826.8633649209861 110.11013940306451 964.4963059055484 141.88520752746177z" fill="rgba(142, 28, 28, 0.4)" class="triangle-float2"></path>
+        <path d="M200.727,93.781C215.453,94.007,229.035,86.264,236.733,73.708C244.813,60.53,247.932,43.49,239.507,30.53C231.59,18.351,215.23,17.493,200.727,18.318C187.985,19.043,175.693,23.739,168.9,34.544C161.644,46.086,160.13,60.624,166.582,72.633C173.373,85.273,186.38,93.561,200.727,93.781" fill="rgba(142, 28, 28, 0.4)" class="triangle-float1"></path>
+    </g>
+    <defs>
+        <mask id="SvgjsMask1012">
+            <rect width="1440" height="560" fill="#ffffff"></rect>
+        </mask>
+        <style>
+            @keyframes float1 {
+                    0%{transform: translate(0, 0)}
+                    50%{transform: translate(-10px, 0)}
+                    100%{transform: translate(0, 0)}
+                }
+
+                .triangle-float1 {
+                    animation: float1 5s infinite;
+                }
+
+                @keyframes float2 {
+                    0%{transform: translate(0, 0)}
+                    50%{transform: translate(-5px, -5px)}
+                    100%{transform: translate(0, 0)}
+                }
+
+                .triangle-float2 {
+                    animation: float2 4s infinite;
+                }
+
+                @keyframes float3 {
+                    0%{transform: translate(0, 0)}
+                    50%{transform: translate(0, -10px)}
+                    100%{transform: translate(0, 0)}
+                }
+
+                .triangle-float3 {
+                    animation: float3 6s infinite;
+                }
+        </style>
+    </defs>
+</svg> -->
+
+<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Circle -->
+  <circle cx="50" cy="50" r="130" fill="#FFD700" opacity="0.7">
+    <animateMotion dur="45s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1">
+      <mpath href="#motionPath1" />
+    </animateMotion>
+    <animate attributeName="r" values="100;150;90" dur="6s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- Rectangle -->
+  <!-- <rect x="30" y="80" width="140" height="130" fill="#FF6347" opacity="0.7">
+    <animateMotion dur="10s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1">
+      <mpath href="#motionPath" />
+    </animateMotion>
+  </rect> -->
+
+  <!-- Triangle -->
+  <polygon points="80,10 100,50 60,50" fill="#00FF00" opacity="0.7">
+    <animateMotion dur="12s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1">
+      <mpath href="#motionPath" />
+    </animateMotion>
+  </polygon>
+
+  <!-- Square -->
+  <rect x="120" y="80" width="30" height="30" fill="#87CEEB" opacity="0.7">
+    <animateMotion dur="12s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1">
+      <mpath href="#motionPath" />
+    </animateMotion>
+  </rect>
+
+  <!-- Motion Path -->
+  <path id="motionPath" d="M50 400 Q 40 10, 80 80 T 180 80" fill="none" stroke="transparent"/>
+  <path id="motionPath1" d="M50 400 Q 40 10, 80 80 T 1200 400" fill="none" stroke="transparent"/>
+
+</svg>
+
