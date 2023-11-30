@@ -1,4 +1,4 @@
-import SketchAnimation from "../public/sketch-animation.json";
+import SketchAnimation from "../public/animations/sketch-animation.json";
 import Lottie from "lottie-react";
 
 
