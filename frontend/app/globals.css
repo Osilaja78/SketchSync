@@ -2,29 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-} */
 
 body {
   overflow-x: hidden;
@@ -65,8 +42,6 @@ body {
   backdrop-filter: blur(11px) saturate(128%);
     -webkit-backdrop-filter: blur(11px) saturate(128%);
     background-color: rgba(255, 255, 255, 0.164);
-    /* border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.125); */
 }
 
 .choose {
@@ -74,4 +49,12 @@ body {
   background-size: 49px 49px;
   background-position: 0 0, 24.5px 24.5px;
   background-color: #ffffff;
+}
+
+/* canvas styles */
+
+.canvas {
+  background-image: radial-gradient(rgba(255, 71, 71, 0.24) 2px, transparent 2px);
+  background-size: 37px 37px;
+  background-color: #fbfbfb;
 }

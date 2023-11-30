@@ -1,10 +1,16 @@
 "use client"
-// frontend/whiteboard/page.jsx
+// frontend/whiteboard/[boardId]/page.jsx
 
 import { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
-import rough from "roughjs";
+import rough from 'roughjs';
 import Image from 'next/image';
+import Logo from '../../../public/images/logo-only.png';
+import Undo from '../../../public/icons/undo.svg';
+import Redo from '../../../public/icons/redo.svg';
+import Clear from '../../../public/icons/clear.svg';
+import blackDrop from '../../../public/icons/blackDrop.svg';
+import Download from '../../../public/icons/download.svg';
 
 
 const roughGenerator = rough.generator();
@@ -26,6 +32,8 @@ export default function WhitBoardPage() {
 
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
+  const winWidth = window.innerWidth;
+  const winHeight = window.innerHeight;
 
 
   if (isHost) {
@@ -186,42 +194,74 @@ export default function WhitBoardPage() {
     setUndoHistory((prev) => prev.slice(0, prev.length - 1));
   }
 
-
+  
   return (
-    <div>
-      <h1 className='text-center text-xl mt-10'>New Board</h1>
-      {isHost && <div className='max-w-[60%] mx-auto flex justify-between p-4 items-center' >
-        <div>
-          <label htmlFor="color">Select Color</label>
-          <input type="color" name="color" id="color" onChange={handleColorChange} />
-        </div>
-        <div className='flex gap-5'>
-          <button
-            className='border-2 border-red-700 rounded-xl p-2'
-            onClick={handleUndoButtonClick}
-            disabled={elements.length === 0}
-          >Undo</button>
-          <button
-            className='border-2 border-green-700 rounded-xl p-2'
-            onClick={handleRedoButtonClick}
-            disabled={undoHistory.length < 1}
-          >Redo</button>
-        </div>
-        <button className='border-2 border-blue-700 rounded-xl p-2' onClick={handleClearCanvas}>Clear Canvas</button>
-      </div>}
+    <>
       {isHost && <canvas
-        className='border border-5 border-black max-w-max m-auto'
+        className='canvas'
         ref={canvasRef}
         id="whiteboard-canvas"
-        width="800"
-        height="500"
+        width={winWidth}
+        height={winHeight}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       ></canvas>}
-      {!isHost && <div className='border border-black h-[500px] w-[800px] mx-auto'>
-        {imageSRC && <Image src={imageSRC} width={800} height={500} alt='canvas' />}
-      </div>}
-    </div>
-  );
+      <div className='absolute top-5 left-5'>
+        <div className='p-5 bg-white'>
+          <Image src={Logo} alt='logo' width={40} height={40} />
+        </div>
+        <hr />
+        <div className='bg-white h-full mt-3 max-w-max'>
+          <Image src={blackDrop} alt='color' className='cursor-pointer bg-gray-100 hover:bg-gray-200 p-4' />
+          <hr />
+          <Image src={Undo} alt='undo' onClick={handleUndoButtonClick} className='cursor-pointer bg-gray-100 hover:bg-gray-200 p-3' />
+          <hr />
+          <Image src={Redo} alt='redo' onClick={handleRedoButtonClick} className='cursor-pointer bg-gray-100 hover:bg-gray-200 p-3' />
+          <hr />
+          <Image src={Clear} alt='clear' onClick={handleClearCanvas} className='cursor-pointer bg-gray-100 hover:bg-gray-200 p-4' />
+          <Image src={Download} alt='download'  className='cursor-pointer bg-gray-100 hover:bg-gray-200 p-4' />
+        </div>
+      </div>
+    </>
+  )
+
+
+  // return (
+  //   <div>
+  //     <h1 className='text-center text-xl mt-10'>New Board</h1>
+  //     {isHost && <div className='max-w-[60%] mx-auto flex justify-between p-4 items-center' >
+  //       <div>
+  //         <label htmlFor="color">Select Color</label>
+  //         <input type="color" name="color" id="color" onChange={handleColorChange} />
+  //       </div>
+  //       <div className='flex gap-5'>
+  //         <button
+  //           className='border-2 border-red-700 rounded-xl p-2'
+  //           onClick={handleUndoButtonClick}
+  //           disabled={elements.length === 0}
+  //         >Undo</button>
+  //         <button
+  //           className='border-2 border-green-700 rounded-xl p-2'
+  //           onClick={handleRedoButtonClick}
+  //           disabled={undoHistory.length < 1}
+  //         >Redo</button>
+  //       </div>
+  //       <button className='border-2 border-blue-700 rounded-xl p-2' onClick={handleClearCanvas}>Clear Canvas</button>
+  //     </div>}
+  //     {isHost && <canvas
+  //       className='border border-5 border-black max-w-max m-auto'
+  //       ref={canvasRef}
+  //       id="whiteboard-canvas"
+  //       width="800"
+  //       height="500"
+  //       onMouseDown={handleMouseDown}
+  //       onMouseMove={handleMouseMove}
+  //       onMouseUp={handleMouseUp}
+  //     ></canvas>}
+  //     {!isHost && <div className='border border-black h-[500px] w-[800px] mx-auto'>
+  //       {imageSRC && <Image src={imageSRC} width={800} height={500} alt='canvas' />}
+  //     </div>}
+  //   </div>
+  // );
 };
