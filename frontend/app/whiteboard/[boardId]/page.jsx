@@ -24,6 +24,8 @@ export default function WhitBoardPage() {
   const [color, setColor] = useState("black");
   const [websocket, setWebsocket] = useState(null);
   const [imageSRC, setImageSRC] = useState("");
+  const [winWidth, setWinWidth] = useState();
+  const [winHeight, setWinHeight] = useState();
 
   const params = useParams();
   const searchParams = useSearchParams();
@@ -32,8 +34,6 @@ export default function WhitBoardPage() {
 
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
-  const winWidth = window.innerWidth;
-  const winHeight = window.innerHeight;
 
 
   if (isHost) {
@@ -54,6 +54,14 @@ export default function WhitBoardPage() {
   // }, [color]);
 
   useEffect(() => {
+    // Get window width and height for the canvas size.
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    setWinWidth(width);
+    setWinHeight(height);
+  
+    // Initialize a websocket connection.
     const ws = new WebSocket(`ws://localhost:8000/ws/${boardId}`);
 
     ws.onopen = () => {
