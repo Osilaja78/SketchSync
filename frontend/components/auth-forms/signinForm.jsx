@@ -3,10 +3,9 @@ import {React, useState, useContext} from "react";
 import Link from "next/link";
 import { warn, notify, baseApiUrl } from "@/app/layout";
 import { ToastContainer } from "react-toastify";
-// import axios from "axios";
 import { useRouter } from "next/navigation";
-// import { GoogleLogin } from "@react-oauth/google";
 import { AuthContext } from "../auth/AuthContext";
+
 
 export default function LoginForm() {
 

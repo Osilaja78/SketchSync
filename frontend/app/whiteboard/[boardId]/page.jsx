@@ -1,7 +1,7 @@
 "use client";
 // frontend/whiteboard/[boardId]/page.jsx
 
-import { useEffect, useRef, useState, useLayoutEffect } from "react";
+import { useEffect, useRef, useState, useLayoutEffect, useContext } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import rough from "roughjs";
 import Image from "next/image";
@@ -12,22 +12,24 @@ import Clear from "../../../public/icons/clear.svg";
 import Download from "../../../public/icons/download.svg";
 import shareIcon from "../../../public/icons/shareIcon.svg";
 import { ToastContainer } from "react-toastify";
-import { notify } from "@/app/layout";
+import { notify, warn } from "@/app/layout";
 import Link from "next/link";
-import { Cambay } from "next/font/google";
+import { AuthContext } from "@/components/auth/AuthContext";
 
 // const roughGenerator = rough.generator();
 
 export default function WhitBoardPage() {
-  const [elements, setElements] = useState([]);
-  const [undoHistory, setUndoHistory] = useState([]);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [color, setColor] = useState("black");
-  const [websocket, setWebsocket] = useState(null);
-  const [imageSRC, setImageSRC] = useState("");
-  const [winWidth, setWinWidth] = useState();
-  const [winHeight, setWinHeight] = useState();
-  const [colorMenuOpen, setColorMenuOpen] = useState(false);
+  const [ elements, setElements ] = useState([]);
+  const [ undoHistory, setUndoHistory ] = useState([]);
+  const [ isDrawing, setIsDrawing ] = useState(false);
+  const [ color, setColor ] = useState("black");
+  const [ websocket, setWebsocket ] = useState(null);
+  const [ imageSRC, setImageSRC ] = useState("");
+  const [ winWidth, setWinWidth ] = useState();
+  const [ winHeight, setWinHeight ] = useState();
+  const [ colorMenuOpen, setColorMenuOpen ] = useState(false);
+  const [ isClient, setIsClient ] = useState(false);
+  const { isLoggedIn } = useContext(AuthContext);
 
   const params = useParams();
   const searchParams = useSearchParams();
@@ -39,6 +41,7 @@ export default function WhitBoardPage() {
 
   if (isHost) {
     useEffect(() => {
+      setIsClient(true);
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
 
@@ -228,14 +231,18 @@ export default function WhitBoardPage() {
 
   // Logic for downloading canvas image (for authenticated users)
   const handleCanvasDownload = () => {
-    const canvas = canvasRef.current;
-    console.log(canvas.style.backgroundColor);
-    const dataURL = canvas.toDataURL("image/png");
-    
-    const a = document.createElement('a');
-    a.href = dataURL;
-    a.download = 'whiteboard.png';
-    a.click();
+    if (isLoggedIn == true) {
+      const canvas = canvasRef.current;
+      console.log(canvas.style.backgroundColor);
+      const dataURL = canvas.toDataURL("image/png");
+      
+      const a = document.createElement('a');
+      a.href = dataURL;
+      a.download = 'whiteboard.png';
+      a.click();
+    } else if (isLoggedIn == false) {
+      warn("Only authenticated users can download a canvas!")
+    }
   };
 
   return (

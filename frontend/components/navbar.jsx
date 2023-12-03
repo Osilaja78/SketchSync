@@ -8,30 +8,34 @@ import Link from 'next/link';
 
 export default function Navbar() {
 
-  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [ isMobileMenuOpen, setMobileMenuOpen ] = useState(false);
+  const [ isClient, setIsClient ] = useState(false);
   const { isLoggedIn, logout } = useContext(AuthContext);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  let btnComp;
   useEffect(() => {
-    if (isLoggedIn === false) {
-      btnComp = <Link href="/auth/signup"><li className="bg-blue-700 text-white py-3 px-5 rounded-xl max-w-max">Sign Up</li></Link>
-    } else if (isLoggedIn === true) {
-      btnComp = <li className="bg-blue-700 text-white py-3 px-5 rounded-xl max-w-max" onClick={() => logout}>Sign Out</li>
-    }
+    setIsClient(true);
   })
 
+  // let btnComp;
+
+  // if (isLoggedIn === false) {
+  //   btnComp = 
+  // } else if (isLoggedIn === true) {
+  //   btnComp = 
+  // }
+
   return (
-    <nav className="flex items-center px-[50px] py-[20px] justify-between">
-      <div className="flex gap-5 items-center cursor-pointer">
-        <Link href="/">
-          <Image src={Logo} width={60} alt="logo" />
-          <p className="text-[30px]">SketchSync</p>
-        </Link>
-      </div>
+    <nav className="flex items-center px-[50px] py-[10px] justify-between max-w-[1400px] mx-auto">
+      {/* <div> */}
+      <Link href="/" className="flex gap-5 items-center cursor-pointer">
+        <Image src={Logo} width={60} alt="logo" />
+        <p className="text-[30px]">SketchSync</p>
+      </Link>
+      {/* </div> */}
 
       {/* Mobile Menu */}
       <div className="lg:hidden">
@@ -43,7 +47,11 @@ export default function Navbar() {
             <li>Home</li>
             <li>How It Works</li>
             <li>Contact Us</li>
-            {btnComp}
+            {isClient && (
+              isLoggedIn == false ? <Link href="/auth/signup"><li className="bg-blue-700 text-white py-3 px-5 rounded-xl max-w-max">Sign Up</li></Link>
+              :
+              <li className="bg-blue-700 text-white py-3 px-5 rounded-xl max-w-max" onClick={() => logout()}>Sign Out</li>
+            )}
           </ul>
         )}
       </div>
@@ -54,8 +62,11 @@ export default function Navbar() {
             <li>Home</li>
             <li>How It Works</li>
             <li>Contact Us</li>
-            {isLoggedIn == false && <li className="bg-blue-700 text-white py-3 px-5 rounded-xl">Sign Up</li>}
-            {isLoggedIn == true && <li className="bg-blue-700 text-white py-3 px-5 rounded-xl">Sign Out</li>}
+            {isClient && (
+              isLoggedIn == false ? <Link href="/auth/signup"><li className="bg-blue-700 text-white py-3 px-5 rounded-xl">Sign Up</li></Link>
+              :
+              isLoggedIn == true && <li className="bg-blue-700 text-white py-3 px-5 rounded-xl cursor-pointer" onClick={() => logout()}>Sign Out</li>
+            )}
         </ul>
       </div>
     </nav>
