@@ -1,6 +1,6 @@
 "use client"
-import "./globals.css";
-import React from 'react';
+// import "./globals.css";
+import { React, useContext } from 'react';
 import Navbar from '@/components/navbar';
 import HeroSection from '@/components/heroSection';
 import DemoSection from '@/components/demoSection';
@@ -8,9 +8,13 @@ import FeaturesSection from '@/components/featuresSection';
 import WhyChooseUsComponent from '@/components/whyChooseUs';
 import TeamsComponent from "@/components/teams";
 import Footer from "@/components/footer";
+import { AuthContext } from '@/components/auth/AuthContext';
 
 
 const HomePage = () => {
+
+  const { isLoggedIn, logout } = useContext(AuthContext);
+
   return (
     <>
       <section className="background">
@@ -41,7 +45,7 @@ const HomePage = () => {
           thing of the past.
         </p>
         <div className="max-w-max mx-auto flex flex-row gap-5">
-          <button className="bg-blue-700 text-white mx-auto py-3 px-5 rounded-xl">Sign Up</button>
+          {isLoggedIn === false && <button className="bg-blue-700 text-white mx-auto py-3 px-5 rounded-xl">Sign Up</button>}
           <button className="bg-red-600 text-white mx-auto py-3 px-5 rounded-xl">Start Whiteboarding</button>
         </div>
       </section>

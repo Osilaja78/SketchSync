@@ -1,23 +1,24 @@
-"use client"
+"use client";
 // frontend/whiteboard/[boardId]/page.jsx
 
-import { useEffect, useRef, useState, useLayoutEffect } from 'react';
-import { useParams, useSearchParams } from 'next/navigation';
-import rough from 'roughjs';
-import Image from 'next/image';
-import Logo from '../../../public/images/logo-only.png';
-import Undo from '../../../public/icons/undo.svg';
-import Redo from '../../../public/icons/redo.svg';
-import Clear from '../../../public/icons/clear.svg';
-import blackDrop from '../../../public/icons/blackDrop.svg';
-import Download from '../../../public/icons/download.svg';
+import { useEffect, useRef, useState, useLayoutEffect } from "react";
+import { useParams, useSearchParams } from "next/navigation";
+import rough from "roughjs";
+import Image from "next/image";
+import Logo from "../../../public/images/logo-only.png";
+import Undo from "../../../public/icons/undo.svg";
+import Redo from "../../../public/icons/redo.svg";
+import Clear from "../../../public/icons/clear.svg";
+import Download from "../../../public/icons/download.svg";
+import shareIcon from "../../../public/icons/shareIcon.svg";
+import { ToastContainer } from "react-toastify";
+import { notify } from "@/app/layout";
+import Link from "next/link";
+import { Cambay } from "next/font/google";
 
-
-const roughGenerator = rough.generator();
-
+// const roughGenerator = rough.generator();
 
 export default function WhitBoardPage() {
-
   const [elements, setElements] = useState([]);
   const [undoHistory, setUndoHistory] = useState([]);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -26,32 +27,31 @@ export default function WhitBoardPage() {
   const [imageSRC, setImageSRC] = useState("");
   const [winWidth, setWinWidth] = useState();
   const [winHeight, setWinHeight] = useState();
+  const [colorMenuOpen, setColorMenuOpen] = useState(false);
 
   const params = useParams();
   const searchParams = useSearchParams();
-  const isHost = searchParams.get('h');
+  const isHost = searchParams.get("h");
   const boardId = params.boardId;
 
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
 
-
   if (isHost) {
     useEffect(() => {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
-  
-      // ctx.strokeStyle = color;
+
+      // canvas.style.backgroundColor = "white"
+
       ctx.lineWidth = 2;
       ctx.lineCap = "round";
-  
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
       ctxRef.current = ctx;
     }, []);
   }
-
-  // useEffect(() => {
-  //   ctxRef.current.strokeStyle = color;
-  // }, [color]);
 
   useEffect(() => {
     // Get window width and height for the canvas size.
@@ -60,7 +60,7 @@ export default function WhitBoardPage() {
 
     setWinWidth(width);
     setWinHeight(height);
-  
+
     // Initialize a websocket connection.
     const ws = new WebSocket(`ws://localhost:8000/ws/${boardId}`);
 
@@ -91,7 +91,12 @@ export default function WhitBoardPage() {
       const roughCanvas = rough.canvas(canvasRef.current);
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
-  
+
+      // ctx.globalCompositeOperation = 'destination-over';
+      ctx.fillStyle = "blue";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      console.log(ctx);
+
       if (elements.length > 0) {
         ctxRef.current.clearRect(
           0,
@@ -100,20 +105,20 @@ export default function WhitBoardPage() {
           canvasRef.current.height
         );
       }
-  
+
       elements.forEach((element) => {
         ctx.strokeStyle = element.color;
         roughCanvas.linearPath(element.path, {
           stroke: element.stroke,
           roughness: 0,
-          strokeWidth: 3
+          strokeWidth: 3,
         });
       });
-  
+
       if (isHost) {
         const imageURL = canvas.toDataURL();
         setImageSRC(imageURL);
-  
+
         if (websocket) {
           websocket.send(JSON.stringify({ type: "canvas_update", imageURL }));
         }
@@ -121,8 +126,9 @@ export default function WhitBoardPage() {
     }, [elements]);
   }
 
+  // Logic for drawing on whiteboard.
   const handleMouseDown = (e) => {
-    const {offsetX, offsetY} = e.nativeEvent;
+    const { offsetX, offsetY } = e.nativeEvent;
 
     setElements((prevElem) => [
       ...prevElem,
@@ -131,18 +137,18 @@ export default function WhitBoardPage() {
         offsetX,
         offsetY,
         path: [[offsetX, offsetY]],
-        color: color
+        color: color,
       },
     ]);
 
     setIsDrawing(true);
-  }
+  };
 
   const handleMouseMove = (e) => {
-    const {offsetX, offsetY} = e.nativeEvent;
+    const { offsetX, offsetY } = e.nativeEvent;
 
     if (isDrawing) {
-      const {path} = elements[elements.length - 1];
+      const { path } = elements[elements.length - 1];
       const newPath = [...path, [offsetX, offsetY]];
 
       setElements((prevElem) =>
@@ -150,126 +156,174 @@ export default function WhitBoardPage() {
           if (idx === elements.length - 1) {
             return {
               ...elem,
-              path: newPath
-            }
+              path: newPath,
+            };
           } else {
-            return  elem;
+            return elem;
           }
         })
       );
     }
-  }
-  
+  };
+
+  // Logic for clear canvas.
   const handleClearCanvas = () => {
     if (isHost) {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
 
       ctx.fillRect = "white";
-      ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       setElements([]);
     }
-  }
+  };
 
   const handleMouseUp = (e) => {
     setIsDrawing(false);
-  }
+  };
 
   const handleColorChange = (e) => {
-    setColor(e.target.value);
-  }
+    setColor(e);
+    setColorMenuOpen(false);
+  };
 
+  // Logic for Undo button.
   const handleUndoButtonClick = () => {
-    setUndoHistory((prev) => [
-      ...prev,
-      elements[elements.length - 1]
-    ]);
+    setUndoHistory((prev) => [...prev, elements[elements.length - 1]]);
 
     setElements((prev) => prev.slice(0, prev.length - 1));
-  }
+  };
 
+  // Logic for redo button.
   const handleRedoButtonClick = () => {
-    setElements((prev) => [
-      ...prev,
-      undoHistory[undoHistory.length - 1]
-    ]);
+    setElements((prev) => [...prev, undoHistory[undoHistory.length - 1]]);
 
     setUndoHistory((prev) => prev.slice(0, prev.length - 1));
+  };
+
+  // Logic for share button.
+  const [ isLinkCopied, setIsLinkCopied ] = useState(false);
+
+  const handleShareButtonClick = async () => {
+    try {
+      await navigator.clipboard.writeText(`http://localhost:3000/whiteboard/${boardId}`);
+      setIsLinkCopied(true);
+      notify("Link copied!")
+
+      // Reset "Link copied" after a short delay
+      setTimeout(() => {
+        setIsLinkCopied(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Error copying link to clipboard', error);
+    }
+  };
+
+  const colorOptions = ['#000000', '#ff0000', '#0000ff', '#ffff00', '#00ff00'];
+
+  // show color pallet to change pencil color
+  const handleColorMenuClick = () => {
+    setColorMenuOpen(!colorMenuOpen);
   }
 
-  
+  // Logic for downloading canvas image (for authenticated users)
+  const handleCanvasDownload = () => {
+    const canvas = canvasRef.current;
+    console.log(canvas.style.backgroundColor);
+    const dataURL = canvas.toDataURL("image/png");
+    
+    const a = document.createElement('a');
+    a.href = dataURL;
+    a.download = 'whiteboard.png';
+    a.click();
+  };
+
   return (
     <>
-      {isHost && <canvas
-        className='canvas'
-        ref={canvasRef}
-        id="whiteboard-canvas"
-        width={winWidth}
-        height={winHeight}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-      ></canvas>}
-      <div className='absolute top-5 left-5'>
-        <div className='p-5 bg-white'>
-          <Image src={Logo} alt='logo' width={40} height={40} />
+      <ToastContainer />
+      {/* ******************** TEMPLATE FOR HOST ********************** */}
+      {isHost && (
+        <canvas
+          className="canvas"
+          ref={canvasRef}
+          id="whiteboard-canvas"
+          width={winWidth}
+          height={winHeight}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+        ></canvas>
+      )}
+      {isHost && <div>
+        <div className="p-5 bg-white absolute top-5 left-5">
+          <Link href="/"><Image src={Logo} alt="logo" width={40} height={40} /></Link>
         </div>
-        <hr />
-        <div className='bg-white h-full mt-3 max-w-max'>
-          <Image src={blackDrop} alt='color' className='cursor-pointer bg-gray-100 hover:bg-gray-200 p-4' />
-          <hr />
-          <Image src={Undo} alt='undo' onClick={handleUndoButtonClick} className='cursor-pointer bg-gray-100 hover:bg-gray-200 p-3' />
-          <hr />
-          <Image src={Redo} alt='redo' onClick={handleRedoButtonClick} className='cursor-pointer bg-gray-100 hover:bg-gray-200 p-3' />
-          <hr />
-          <Image src={Clear} alt='clear' onClick={handleClearCanvas} className='cursor-pointer bg-gray-100 hover:bg-gray-200 p-4' />
-          <Image src={Download} alt='download'  className='cursor-pointer bg-gray-100 hover:bg-gray-200 p-4' />
+        <div className="max-h-max mt-3 max-w-max absolute top-28 left-5">
+          <div className="flex">
+            {!colorMenuOpen && <div className="cursor-pointer bg-gray-100 hover:bg-gray-200 max-w-max p-[14px]" onClick={handleColorMenuClick}>
+              <div
+                className="w-8 h-8 rounded-full"
+                style={{ backgroundColor: color }}
+              ></div>
+            </div>}
+            {colorMenuOpen && <div className="flex cursor-pointer bg-gray-100 p-[14px]">
+            {colorOptions.map((color) => (
+              <div
+                key={color}
+                className="w-8 h-8 cursor-pointer mr-2 rounded-full"
+                style={{ backgroundColor: color }}
+                onClick={() => handleColorChange(color)}
+              ></div>
+            ))}
+            </div>}
+          </div>
+          <hr className="max-w-min" />
+          <Image
+            src={Undo}
+            alt="undo"
+            onClick={handleUndoButtonClick}
+            className={`cursor-pointer bg-gray-100 hover:bg-gray-200 p-3 ${
+              elements.length === 0 ? 'disabled' : ''
+            }`}
+          />
+          <hr className="max-w-min" />
+          <Image
+            src={Redo}
+            alt="redo"
+            onClick={handleRedoButtonClick}
+            className={`cursor-pointer bg-gray-100 hover:bg-gray-200 p-3 ${undoHistory.length < 1 ? 'disabled' : ''}`}
+          />
+          <hr className="max-w-min" />
+          <Image
+            src={Clear}
+            alt="clear"
+            onClick={handleClearCanvas}
+            className="cursor-pointer bg-gray-100 hover:bg-gray-200 p-4"
+          />
+          <hr className='max-w-min'/>
+          <Image
+            src={shareIcon}
+            alt="download"
+            onClick={handleShareButtonClick}
+            className="cursor-pointer bg-gray-100 hover:bg-gray-200 p-4"
+          />
+          <hr className='max-w-min'/>
+          <Image
+            src={Download}
+            alt="download"
+            onClick={handleCanvasDownload}
+            className="cursor-pointer bg-gray-100 hover:bg-gray-200 p-4"
+          />
         </div>
-      </div>
+      </div>}
+      {/* ******************* VIEW ONLY TEMPLATE ********************* */}
+      {!isHost && <div className='canvas w-screen h-screen'>
+      <div className="absolute top-5 left-[45%] p-3 max-w-max rounded-xl bg-gray-800 text-white">View Only</div>
+        <div className="p-5 bg-white absolute top-5 left-5">
+            <Image src={Logo} alt="logo" width={40} height={40} />
+        </div>
+        {imageSRC && <Image src={imageSRC} width={winWidth} height={winHeight} alt='canvas' />}
+      </div>}
     </>
-  )
-
-
-  // return (
-  //   <div>
-  //     <h1 className='text-center text-xl mt-10'>New Board</h1>
-  //     {isHost && <div className='max-w-[60%] mx-auto flex justify-between p-4 items-center' >
-  //       <div>
-  //         <label htmlFor="color">Select Color</label>
-  //         <input type="color" name="color" id="color" onChange={handleColorChange} />
-  //       </div>
-  //       <div className='flex gap-5'>
-  //         <button
-  //           className='border-2 border-red-700 rounded-xl p-2'
-  //           onClick={handleUndoButtonClick}
-  //           disabled={elements.length === 0}
-  //         >Undo</button>
-  //         <button
-  //           className='border-2 border-green-700 rounded-xl p-2'
-  //           onClick={handleRedoButtonClick}
-  //           disabled={undoHistory.length < 1}
-  //         >Redo</button>
-  //       </div>
-  //       <button className='border-2 border-blue-700 rounded-xl p-2' onClick={handleClearCanvas}>Clear Canvas</button>
-  //     </div>}
-  //     {isHost && <canvas
-  //       className='border border-5 border-black max-w-max m-auto'
-  //       ref={canvasRef}
-  //       id="whiteboard-canvas"
-  //       width="800"
-  //       height="500"
-  //       onMouseDown={handleMouseDown}
-  //       onMouseMove={handleMouseMove}
-  //       onMouseUp={handleMouseUp}
-  //     ></canvas>}
-  //     {!isHost && <div className='border border-black h-[500px] w-[800px] mx-auto'>
-  //       {imageSRC && <Image src={imageSRC} width={800} height={500} alt='canvas' />}
-  //     </div>}
-  //   </div>
-  // );
-};
+  );
+}

@@ -58,3 +58,9 @@ body {
   background-size: 37px 37px;
   background-color: #fbfbfb;
 }
+
+/* class for disabled images */
+
+.disabled {
+  pointer-events: none;
+}

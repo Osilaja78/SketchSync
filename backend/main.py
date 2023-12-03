@@ -1,16 +1,14 @@
 from fastapi import FastAPI
-from api.routers import ws
+from api.routers import ws, users, auth
 from fastapi.middleware.cors import CORSMiddleware
-# from api import models
-# from api.database import engine
+from api import models
+from api.database import engine
 import uvicorn
 
 
-# Initialize a FastAPI instance.
 app = FastAPI(title="SketchSync")
 
 
-# Enable CORS middleware
 origins = [
     "http://localhost",
     "http://localhost:8080",
@@ -26,17 +24,26 @@ app.add_middleware(
 )
 
 # Initialize database migration
-# models.Base.metadata.create_all(bind=engine)
+models.Base.metadata.create_all(bind=engine)
 
-# Index page
+
 @app.get('/')
 def index():
+    """
+    Index page.
+
+    Return:
+        message: welcome message.
+    """
+
     return {
         'message': 'Welcome to SketchSync, a real-time collaborative whiteboard for sketching ideas.'
     }
 
 # Include routes from other router files
 app.include_router(ws.router)
+app.include_router(users.router)
+app.include_router(auth.router)
 
 
 # Run uvicorn server
