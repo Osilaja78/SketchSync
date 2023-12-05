@@ -35,7 +35,7 @@ export default function HeroSection() {
     };
 
     return (
-        <div className="md:flex w-[80%] md:w-[100%] max-w-[1000px] mx-auto gap-10 mt-[40px] md:mt-[70px]">
+        <div className="md:flex items-center w-[80%] md:w-[100%] max-w-[1000px] mx-auto gap-10 mt-[40px] md:mt-[70px] text-white">
             <div className="max-w-[650px]">
                 <h1 className="text-[30px] md:text-[50px]">Unlock Seamless Collaboration with Our Real-Time Whiteboard</h1>
                 <h2 className="text-[20px] mt-3">Transform Ideas into Reality — Together, Anytime, Anywhere</h2>

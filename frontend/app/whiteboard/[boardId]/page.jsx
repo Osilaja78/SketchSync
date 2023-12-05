@@ -15,6 +15,7 @@ import { ToastContainer } from "react-toastify";
 import { notify, warn } from "@/app/layout";
 import Link from "next/link";
 import { AuthContext } from "@/components/auth/AuthContext";
+import { baseApiUrl } from "@/app/layout";
 
 // const roughGenerator = rough.generator();
 
@@ -209,7 +210,7 @@ export default function WhitBoardPage() {
 
   const handleShareButtonClick = async () => {
     try {
-      await navigator.clipboard.writeText(`http://localhost:3000/whiteboard/${boardId}`);
+      await navigator.clipboard.writeText(`${baseApiUrl}/whiteboard/${boardId}`);
       setIsLinkCopied(true);
       notify("Link copied!")
 

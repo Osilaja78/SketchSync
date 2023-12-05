@@ -29,13 +29,13 @@ const HomePage = () => {
           <HeroSection />
         </div>
       </section>
-      <section className=''>
+      {/* <section className=''>
         <DemoSection />
-      </section>
-      <section className='max-w-[1000px] mx-auto'>
+      </section> */}
+      <section id='features' className='max-w-[1000px] mx-auto'>
         <FeaturesSection />
       </section>
-      <section>
+      <section id='about'>
         <WhyChooseUsComponent />
       </section>
       <section className='choose'>

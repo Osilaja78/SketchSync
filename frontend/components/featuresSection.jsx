@@ -11,9 +11,9 @@ export default function FeaturesSection() {
     const desc3 = "From brainstorming sessions to project planning, our whiteboard adapts to your needs. Use it for teaching, planning, designing, or any collaborative endeavor that requires a shared visual space."
 
     return (
-        <div className="my-20">
-            <h2 className="text-center text-[40px] max-w-max m-auto mb-10">Features</h2>
-            <div className="flex flex-wrap justify-between gap-10">
+        <div className="my-20 max-w-[1000px] mx-5">
+            <h2 className="text-center text-[40px] max-w-max mx-auto mb-10">Features</h2>
+            <div className="flex flex-col sm:flex-row max-w-max mx-auto flex-wrap justify-between gap-5">
                 <FeaturesCardComponent
                     image={collabIcon}
                     title="Instant Collaboration"

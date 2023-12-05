@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Logo from '../public/images/logo-only.png';
 import { AuthContext } from './auth/AuthContext';
 import Link from 'next/link';
+import { Link as ScrollLink } from 'react-scroll';
 
 
 export default function Navbar() {
@@ -29,7 +30,7 @@ export default function Navbar() {
   // }
 
   return (
-    <nav className="flex items-center px-[50px] py-[10px] justify-between max-w-[1400px] mx-auto">
+    <nav className="flex items-center px-[50px] py-[10px] justify-between max-w-[1400px] mx-auto text-white">
       {/* <div> */}
       <Link href="/" className="flex gap-5 items-center cursor-pointer">
         <Image src={Logo} width={60} alt="logo" />
@@ -45,8 +46,12 @@ export default function Navbar() {
         {isMobileMenuOpen && (
           <ul className="absolute top-[80px] left-0 bg-white z-50 p-8 list-none flex flex-col gap-5 w-screen">
             <li>Home</li>
-            <li>How It Works</li>
-            <li>Contact Us</li>
+            <ScrollLink to="features" spy={true} smooth={true} duration={500}>
+              <li>Features</li>
+            </ScrollLink>
+            <ScrollLink to="about" spy={true} smooth={true} duration={500}>
+              <li className='cursor-pointer'>About</li>
+            </ScrollLink>
             {isClient && (
               isLoggedIn == false ? <Link href="/auth/signup"><li className="bg-blue-700 text-white py-3 px-5 rounded-xl max-w-max">Sign Up</li></Link>
               :
@@ -59,9 +64,15 @@ export default function Navbar() {
       {/* Desktop Menu */}
       <div className="hidden lg:flex items-center gap-10 text-[20px]">
         <ul className="flex items-center gap-10 text-[20px]">
-            <li>Home</li>
-            <li>How It Works</li>
-            <li>Contact Us</li>
+            <Link href="/">
+              <li>Home</li>
+            </Link>
+            <ScrollLink to="features" spy={true} smooth={true} duration={500}>
+              <li className='cursor-pointer'>Features</li>
+            </ScrollLink>
+            <ScrollLink to="about" spy={true} smooth={true} duration={500}>
+              <li className='cursor-pointer'>About</li>
+            </ScrollLink>
             {isClient && (
               isLoggedIn == false ? <Link href="/auth/signup"><li className="bg-blue-700 text-white py-3 px-5 rounded-xl">Sign Up</li></Link>
               :
