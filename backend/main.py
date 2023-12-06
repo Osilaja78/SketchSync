@@ -13,6 +13,7 @@ origins = [
     "http://localhost",
     "http://localhost:8080",
     "http://localhost:3000",
+    "https://sketch-sync.vercel.app"
 ]
 
 app.add_middleware(
@@ -22,6 +23,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Initialize database migration
 models.Base.metadata.create_all(bind=engine)
