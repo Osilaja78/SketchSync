@@ -5,7 +5,7 @@ import Navbar from "@/components/navbar";
 export default function SignupPage() {
     return (
         <>
-            <Navbar />
+            <Navbar home={false} />
             <hr />
             <SigninForm />
         </>

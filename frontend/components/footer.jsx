@@ -1,25 +1,11 @@
 import Image from "next/image";
 import Logo from "../public/images/logo-only.png";
+import Link from "next/link";
+import { Link as ScrollLink } from "react-scroll";
 
 
 export default function Footer() {
     return (
-        // <footer className="max-w-[1000px] mx-auto py-10">
-        //     <div className="">
-        //         <div className="flex gap-5 items-center">
-        //             <Image src={Logo} width={60} alt="logo" />
-        //             <p className="text-[30px]">SketchSync</p>
-        //         </div>
-        //         <p className="max-w-[350px] pt-5">
-        //             Unlock Seamless Collaboration with Our Real-Time Whiteboard
-        //         </p>
-        //     </div>
-        //     <div>
-        //         <ul>
-        //             <li></li>
-        //         </ul>
-        //     </div>
-        // </footer>
         <>
             <section className="max-w-[1000px] mx-auto">
                 <div className="flex flex-col md:grid md:grid-cols-5 m-auto py-20">
@@ -36,9 +22,15 @@ export default function Footer() {
                         <div>
                             <p className="text-[25px]">Useful Links</p>
                             <ul>
-                                <li>Home</li>
-                                <li>How it works</li>
-                                <li>Contact us</li>
+                                <Link href="/">
+                                    <li>Home</li>
+                                </Link>
+                                <ScrollLink to="features" spy={true} smooth={true} duration={500}>
+                                    <li>Features</li>
+                                </ScrollLink>
+                                <ScrollLink to="features" spy={true} smooth={true} duration={500}>
+                                    <li>About</li>
+                                </ScrollLink>
                             </ul>
                         </div>
                         <div>
@@ -52,8 +44,12 @@ export default function Footer() {
                         <div>
                             <p className="text-[25px]">Socials</p>
                             <ul>
-                                <li>Twitter</li>
-                                <li>GitHub</li>
+                                <Link href="https://twitter.com/HameedOsilaja" target="blank">
+                                    <li>Twitter</li>
+                                </Link>
+                                <Link href="https://github.com/Osilaja78" target="blank">
+                                    <li>GitHub</li>
+                                </Link>
                             </ul>
                         </div>
                     </div>

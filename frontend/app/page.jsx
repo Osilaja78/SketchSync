@@ -25,7 +25,7 @@ const HomePage = () => {
       <section className="background">
         {/* <Image src={bg} className='absolute'/> */}
         <div className='hero bg-white h-screen w-screen relative bg-opacity-8'>
-          <Navbar />
+          <Navbar home={true} />
           <HeroSection />
         </div>
       </section>
@@ -41,7 +41,7 @@ const HomePage = () => {
       <section className='choose'>
         <TeamsComponent />
       </section>
-      <section className="max-w-[600px] mx-auto my-20">
+      <section className="max-w-[600px] mx-auto my-20 px-6 md:px-0 text-center md:text-left">
         <h1 className="text-[30px]">Ready to Transform Your Collaboration?</h1>
         <p className="text-center text-[20px] py-5">
           Sign up for SketchSync today and experience 

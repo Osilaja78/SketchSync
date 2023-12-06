@@ -6,7 +6,7 @@ import twitterIcon from "../public/icons/twitterIcon.svg";
 
 export default function WhyChooseUsComponent() {
     return (
-        <div className="max-w-[1000px] mx-auto pb-20 pt-5">
+        <div className="max-w-[1000px] mx-auto pb-20 pt-5 px-10 md:px-0">
             <h1 className="text-center text-[40px] max-w-max mx-auto mb-10">About SketchSync</h1>
             <div className="max-w-[600px] mx-auto my-5 text-center">
                 <p>

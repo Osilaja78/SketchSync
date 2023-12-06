@@ -8,11 +8,11 @@ import teamsAnimation from "../public/animations/teams-animation.json";
 
 export default function TeamsComponent() {
     return (
-        <div className="max-w-[900px] mx-auto">
-            <h1 className="text-[40px] text-center">Your Canvas for Collaboration, Tailored for Every Team</h1>
-            <div className="flex items-center">
+        <div className="max-w-[900px] mx-auto px-10 md:px-0">
+            <h1 className="text-[30px] md:text-[40px] text-center mb-5">Your Canvas for Collaboration, Tailored for Every Team</h1>
+            <div className="flex flex-col md:flex-row text-center md:text-left items-center">
                 <div className="flex flex-col gap-2">
-                    <h2 className="text-[30px]">For Educators:</h2>
+                    <h2 className="text-[25px] md:text-[30px]">For Educators:</h2>
                     <i>Unlock Interactive Learning</i>
                     <p>
                         Enrich your virtual classrooms with SketchSync. Engage students 
@@ -26,10 +26,11 @@ export default function TeamsComponent() {
                     className='max-w-[800px]'
                 />
             </div>
-            <div className="flex items-center">
+            <hr className="md:hidden"/>
+            <div className="flex flex-col md:flex-row text-center md:text-left items-center mb-5 md:mb-0">
                 <Lottie animationData={designersAnimation} className='max-w-[800px] min-w-[350px]'/>
                 <div className="flex flex-col gap-2">
-                    <h2 className="text-[30px]">For Designers:</h2>
+                    <h2 className="text-[25px] md:text-[30px]">For Designers:</h2>
                     <i>Bring Ideas to Life, Together</i>
                     <p>
                         Designers, rejoice! From concept sketches to collaborative 
@@ -39,9 +40,10 @@ export default function TeamsComponent() {
                     </p>
                 </div>
             </div>
-            <div className="flex items-center">
+            <hr className="md:hidden"/>
+            <div className="flex flex-col md:flex-row text-center md:text-left items-center mt-5 md:mt-0">
                 <div className="flex flex-col gap-2">
-                    <h2 className="text-[30px]">For Project Managers:</h2>
+                    <h2 className="text-[25px] md:text-[30px]">For Project Managers:</h2>
                     <i>Simplify Planning and Coordination</i>
                     <p>
                         Streamline your projects with our whiteboard. Whether 
@@ -52,10 +54,11 @@ export default function TeamsComponent() {
                 </div>
                 <Lottie animationData={managersAnimation} className='max-w-[800px]'/>
             </div>
-            <div className="flex items-center">
+            <hr className="md:hidden"/>
+            <div className="flex flex-col md:flex-row text-center md:text-left items-center">
                 <Lottie animationData={teamsAnimation} className='max-w-[800px] min-w-[350px]'/>
                 <div className="flex flex-col gap-2">
-                    <h2 className="text-[30px]">For Remote Teams:</h2>
+                    <h2 className="text-[25px] md:text-[30px]">For Remote Teams:</h2>
                     <i>Bridge the Distance Gap</i>
                     <p>
                         Distance is no longer a barrier to collaboration. SketchSync 
