@@ -35,8 +35,8 @@ export default function Navbar({ home }) {
       {/* Mobile Menu */}
       <div className="lg:hidden">
         <button onClick={toggleMobileMenu} className="text-[30px]">
-          { home === true ? <Image src={ isMobileMenuOpen === false ? hamburger : close } /> :
-          <Image src={ isMobileMenuOpen === false ? hamburgerBlack : closeBlack } />}
+          { home === true ? <Image src={ isMobileMenuOpen === false ? hamburger : close } alt='menu' /> :
+          <Image src={ isMobileMenuOpen === false ? hamburgerBlack : closeBlack } alt='menu' />}
         </button>
         {isMobileMenuOpen && (
           <ul className="slide-bottom absolute top-[-10px] left-0 bg-white z-50 p-8 list-none flex flex-col gap-5 w-screen text-black">

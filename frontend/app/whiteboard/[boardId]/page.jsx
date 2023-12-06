@@ -98,8 +98,7 @@ export default function WhitBoardPage() {
 
       // ctx.globalCompositeOperation = 'destination-over';
       ctx.fillStyle = "blue";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      console.log(ctx);
+      // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       if (elements.length > 0) {
         ctxRef.current.clearRect(
@@ -210,7 +209,7 @@ export default function WhitBoardPage() {
 
   const handleShareButtonClick = async () => {
     try {
-      await navigator.clipboard.writeText(`${baseApiUrl}/whiteboard/${boardId}`);
+      await navigator.clipboard.writeText(`https://sketch-sync.vercel.app/whiteboard/${boardId}`);
       setIsLinkCopied(true);
       notify("Link copied!")
 

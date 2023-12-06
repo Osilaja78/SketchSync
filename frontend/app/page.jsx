@@ -24,7 +24,7 @@ const HomePage = () => {
     <>
       <section className="background">
         {/* <Image src={bg} className='absolute'/> */}
-        <div className='hero bg-white h-screen w-screen relative bg-opacity-8'>
+        <div className='hero bg-white min-h-min h-max w-screen relative bg-opacity-8'>
           <Navbar home={true} />
           <HeroSection />
         </div>
