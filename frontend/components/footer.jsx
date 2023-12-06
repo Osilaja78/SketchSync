@@ -28,7 +28,7 @@ export default function Footer() {
                                 <ScrollLink to="features" spy={true} smooth={true} duration={500}>
                                     <li>Features</li>
                                 </ScrollLink>
-                                <ScrollLink to="features" spy={true} smooth={true} duration={500}>
+                                <ScrollLink to="about" spy={true} smooth={true} duration={500}>
                                     <li>About</li>
                                 </ScrollLink>
                             </ul>
