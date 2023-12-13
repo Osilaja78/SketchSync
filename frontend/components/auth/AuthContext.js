@@ -1,4 +1,5 @@
 "use client"
+// This file contains global (app-wide) context for user authentication
 import { useState, createContext } from "react";
 
 const AuthContext = createContext();

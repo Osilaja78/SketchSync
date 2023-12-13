@@ -1,5 +1,5 @@
+// For teams section in homepage.
 import Lottie from "lottie-react";
-import SketchAnimation from "../public/animations/sketch-animation.json";
 import educatorsAnimation from "../public/animations/educators-animation.json";
 import designersAnimation from "../public/animations/designers-animation.json";
 import managersAnimation from "../public/animations/managers-animation.json";

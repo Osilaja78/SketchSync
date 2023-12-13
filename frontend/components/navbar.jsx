@@ -1,4 +1,5 @@
 "use client"
+// Main navigation bar component (mobile responsive).
 import React, { useState, useContext, useEffect } from 'react';
 import Image from 'next/image';
 import Logo from '../public/images/logo-only.png';
@@ -17,6 +18,7 @@ export default function Navbar({ home }) {
   const [ isClient, setIsClient ] = useState(false);
   const { isLoggedIn, logout } = useContext(AuthContext);
 
+  // Handles navbar toggling.
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };

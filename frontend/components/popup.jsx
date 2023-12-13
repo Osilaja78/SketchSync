@@ -1,3 +1,4 @@
+// Popup notification for usrs when creating a new whiteboard.
 import { React, useState } from "react";
 import { useRouter } from "next/navigation";
 import { warn, baseApiUrl } from "@/app/layout";
@@ -9,6 +10,7 @@ export default function CreateBoardPopup() {
     const [ isLoading, setIsLoading ] = useState(false);
     const router = useRouter();
 
+    // Action taken when continue button is clicked.
     const handleCreateBoard = async () => {
         setIsLoading(true);
         // Make a request to the backend to create a new board and get the board ID
@@ -19,7 +21,7 @@ export default function CreateBoardPopup() {
             const data = await response.json();
     
             router.push(`/whiteboard/${data.board_id}?h=true`);
-        } catch (err) {
+        } catch (err) { // handle API errors.
             warn(err);
         }
         setIsLoading(false);

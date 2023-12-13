@@ -1,3 +1,4 @@
+// Footer section component.
 import Image from "next/image";
 import Logo from "../public/images/logo-only.png";
 import Link from "next/link";

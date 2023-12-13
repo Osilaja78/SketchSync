@@ -1,3 +1,4 @@
+// Main hero section for homepage.
 import SketchAnimation from "../public/animations/sketch-animation.json";
 import Lottie from "lottie-react";
 import Popup from 'reactjs-popup';
@@ -7,7 +8,6 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./auth/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { baseApiUrl } from "@/app/layout";
-import { Island_Moments } from "next/font/google";
 
 
 export default function HeroSection() {
@@ -22,6 +22,7 @@ export default function HeroSection() {
     })
     const router = useRouter();
 
+    // Action taken when user wants to create a new board.
     const handleCreateBoard = async () => {
         setIsLoading(true);
         // Make a request to the backend to create a new board and get the board ID
@@ -30,9 +31,11 @@ export default function HeroSection() {
         });
         const data = await response.json();
 
+        // redirect user to their newly created whiteboard.
         router.push(`/whiteboard/${data.board_id}?h=true`);
         setIsLoading(false);
     };
+
 
     return (
         <div className="md:flex items-center w-[80%] md:w-[100%] max-w-[1000px] mx-auto gap-10 mt-[40px] md:mt-[70px] pb-[135px] text-white">

@@ -14,7 +14,7 @@ export default function SignupForm() {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
 
-
+    // Set form state for signup form.
     const [signupForm, setSignupForm] = useState({
         first_name: "",
         last_name: "",
@@ -23,6 +23,7 @@ export default function SignupForm() {
         confirm_password: "",
     });
 
+    // Handle form change: save user input into previously created state.
     const handleChange = (event) => {
         const { name, value } = event.target;
         setSignupForm((prevState) => {
@@ -40,6 +41,7 @@ export default function SignupForm() {
         setResponse(null)
         setError('')
 
+        // Call to the backend API.
         try {
             const response = await fetch(`${baseApiUrl}/user`, {
                 method: 'POST',
@@ -60,7 +62,7 @@ export default function SignupForm() {
             }
           
             setLoading(false);
-          } catch (err) {
+          } catch (err) { // Handle signup error.
             console.error(err);
             setError('An error occurred while processing your request.');
             console.log(error);
@@ -69,11 +71,13 @@ export default function SignupForm() {
           
     };
 
+    // Error warning modal from react toastify.
     if (error) {
 		warn(`${error}`);
         setError('');
 	}
 
+    // Response modal from react toastify.
 	if (response) {
 		notify(`${response}`)
         setResponse('');

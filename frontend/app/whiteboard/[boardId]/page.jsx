@@ -17,7 +17,6 @@ import Link from "next/link";
 import { AuthContext } from "@/components/auth/AuthContext";
 import { baseApiUrl } from "@/app/layout";
 
-// const roughGenerator = rough.generator();
 
 export default function WhitBoardPage() {
   const [ elements, setElements ] = useState([]);
@@ -40,13 +39,12 @@ export default function WhitBoardPage() {
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
 
+  // Basic setup for the html canvas.
   if (isHost) {
     useEffect(() => {
       setIsClient(true);
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
-
-      // canvas.style.backgroundColor = "white"
 
       ctx.lineWidth = 2;
       ctx.lineCap = "round";
@@ -57,6 +55,8 @@ export default function WhitBoardPage() {
     }, []);
   }
 
+  // Set proper width and height for canvas, connect
+  // and listen to websocket changes.
   useEffect(() => {
     // Get window width and height for the canvas size.
     const width = window.innerWidth;
@@ -73,6 +73,7 @@ export default function WhitBoardPage() {
       setWebsocket(ws);
     };
 
+    // Listens for message from the websocket.
     ws.onmessage = (e) => {
       const data = JSON.parse(e.data);
       if (data.type === "canvas_update") {
@@ -90,15 +91,14 @@ export default function WhitBoardPage() {
     };
   }, []);
 
+  // Handle user drawing on canvas.
   if (isHost) {
     useLayoutEffect(() => {
       const roughCanvas = rough.canvas(canvasRef.current);
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
 
-      // ctx.globalCompositeOperation = 'destination-over';
       ctx.fillStyle = "blue";
-      // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       if (elements.length > 0) {
         ctxRef.current.clearRect(
@@ -118,6 +118,8 @@ export default function WhitBoardPage() {
         });
       });
 
+      // Convert board data to image and send the image url to
+      // backend websocket connection for broadcast to other users.
       if (isHost) {
         const imageURL = canvas.toDataURL();
         setImageSRC(imageURL);

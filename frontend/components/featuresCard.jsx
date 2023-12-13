@@ -1,3 +1,4 @@
+// Features card component for homepage.
 import Image from "next/image"
 
 

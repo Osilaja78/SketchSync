@@ -1,3 +1,4 @@
+// Why choose us section in homepage.
 import Image from "next/image";
 import Link from "next/link";
 import ghIcon from "../public/icons/ghIcon.svg";

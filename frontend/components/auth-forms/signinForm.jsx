@@ -1,4 +1,5 @@
 "use client"
+// Signin form component.
 import {React, useState, useContext} from "react";
 import Link from "next/link";
 import { warn, notify, baseApiUrl } from "@/app/layout";
@@ -16,11 +17,13 @@ export default function LoginForm() {
 
     const router = useRouter();
 
+    // set state for form details.
     const [loginForm, setLoginForm] = useState({
         username: "",
         password: "",
     });
 
+    // Handle form change: save user input into previously created state.
     const handleChange = (event) => {
         setError('');
         setResponse('');
@@ -33,12 +36,14 @@ export default function LoginForm() {
         });
     };
 
+    // Action taken when user submits the form.
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true)
         setResponse('')
         setError('')
 
+        // Call to the backend API.
         try {
             const response = await fetch(`${baseApiUrl}/auth/login`, {
                 method: 'POST',
@@ -63,6 +68,7 @@ export default function LoginForm() {
             }
           
         setLoading(false);
+        // Handle signin error.
         } catch (err) {
             console.error(err);
             setError('An error occurred while processing your request.');
@@ -70,12 +76,13 @@ export default function LoginForm() {
         }
     };
 
-    
+    // Error warning modal form React Toastify.
     if (error) {
 		warn(`${error}`);
         setError('');
 	}
 
+    // Response modal from react toastify.
 	if (response) {
 		notify(`${response}`);
         setResponse('');

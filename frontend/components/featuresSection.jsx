@@ -1,3 +1,4 @@
+// Features section for homepage.
 import FeaturesCardComponent from "./featuresCard";
 import collabIcon from "../public/icons/collaboration.svg";
 import liveUpdateIcon from "../public/icons/live-update.svg";

@@ -23,11 +23,6 @@ export const inform = (val) => toast.info(`${val}`, toastParams);
 
 export const baseApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL
 
-// export const metadata = {
-//   title: 'SketchSync',
-//   description: 'A real-time whiteboard sharing app',
-// }
-
 
 export default function RootLayout({ children }) {
   return (
