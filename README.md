@@ -3,6 +3,8 @@
 
 SketchSync is a real-time collaborative whiteboard application designed to facilitate seamless collaboration and brainstorming among teams. This project is part of my ALX Software Engineering School portfolio.
 
+### Our Story
+The idea sprouted from a shared experience - the challenges of working together seamlessly, irrespective of physical boundaries. We envisioned a platform that would redefine collaborative work, bringing teams closer and enhancing creativity. SketchSync was born out of this vision, and it has been an exhilarating ride turning our dream into reality.
  ![Screenshot 2023-12-06 034938](https://github.com/Osilaja78/SketchSync/assets/105312707/7dd9b7a1-f0ee-463c-9c56-a3ebdfb9edbb)
  
 ## Table of Contents
